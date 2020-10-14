@@ -1,57 +1,24 @@
-"""
-        The sum-of-subsetsproblem states that a set of non-negative integers, and a
-        value M, determine all possible subsets of the given set whose summation sum
-        equal to given M.
+import numpy as np
 
-        Summation of the chosen numbers must be equal to given number M and one number
-        can be used only once.
-"""
-
-
-def generate_sum_of_subsets_soln(nums, max_sum):
-    result = []
-    path = []
-    num_index = 0
-    remaining_nums_sum = sum(nums)
-    create_state_space_tree(nums, max_sum, num_index, path, result, remaining_nums_sum)
-    return result
-
-
-def create_state_space_tree(nums, max_sum, num_index, path, result, remaining_nums_sum):
-    """
-    Creates a state space tree to iterate through each branch using DFS.
-    It terminates the branching of a node when any of the two conditions
-    given below satisfy.
-    This algorithm follows depth-fist-search and backtracks when the node is not
-    branchable.
-
-    """
-    if sum(path) > max_sum or (remaining_nums_sum + sum(path)) < max_sum:
-        return
-    if sum(path) == max_sum:
-        result.append(path)
-        return
-    for num_index in range(num_index, len(nums)):
-        create_state_space_tree(
-            nums,
-            max_sum,
-            num_index + 1,
-            path + [nums[num_index]],
-            result,
-            remaining_nums_sum - nums[num_index],
-        )
-
-
-"""
-remove the comment to take an input from the user
-
-print("Enter the elements")
-nums = list(map(int, input().split()))
-print("Enter max_sum sum")
-max_sum = int(input())
-
-"""
-nums = [3, 34, 4, 12, 5, 2]
-max_sum = 9
-result = generate_sum_of_subsets_soln(nums, max_sum)
-print(*result)
+m=35
+w=[15,7,20,5,18,10,12]
+sum=np.sum(w)
+# print(w)
+n=len(w)
+x=np.zeros(n)
+x=x.astype(np.int)
+def sum_of_subsets(s,k,r):
+    # print(s)
+    x[k]=1
+    if s+w[k] == m:
+        for j in range(k+1,n):
+            x[j]=0
+        print(x)
+    else:
+        if (s+w[k]+w[k+1])<= m:
+            sum_of_subsets(s+w[k],k+1,r-w[k])
+    if((s+r-w[k])>=m) and ((s+w[k+1])<=m):
+        x[k]=0
+        sum_of_subsets(s,k+1,r-w[k])
+print("Possible solutions are: ")
+sum_of_subsets(0,0,sum)
